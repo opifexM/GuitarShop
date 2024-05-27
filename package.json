@@ -1,0 +1,30 @@
+{
+  "name": "guitarshop",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "start:backend": "npm run start --workspace backend",
+    "build:backend": "npm run build --workspace backend",
+    "start:frontend": "npm run start --workspace frontend",
+    "build:frontend": "npm run build --workspace frontend",
+    "server:docker-up": "docker compose --file ./backend/docker-compose.dev.yml --env-file ./backend/server.env --project-name \"guitar-shop\" up -d",
+    "server:docker-down": "docker compose --file ./backend/docker-compose.dev.yml --env-file ./backend/server.env --project-name \"guitar-shop\" down"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2"
+  }
+}
