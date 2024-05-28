@@ -46,6 +46,8 @@ export class UserController {
   }
 
   @Get(':userId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiResponse({
     status: 200,
@@ -63,6 +65,8 @@ export class UserController {
   }
 
   @Patch(':userId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update user' })
   @ApiResponse({
     status: 200,
@@ -81,6 +85,8 @@ export class UserController {
   }
 
   @Delete(':userId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete user by ID' })
   @ApiResponse({
     status: 200,

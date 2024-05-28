@@ -6,11 +6,12 @@ import {
   Logger,
   Param,
   Patch,
-  Post,
+  Post, UseGuards
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { fillDto } from 'shared/lib/common';
 import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
+import { JwtAuthGuard } from '../user/authentication/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
@@ -24,6 +25,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post('')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Create a new product' })
   @ApiResponse({
     status: 201,
@@ -41,6 +44,8 @@ export class ProductController {
   }
 
   @Get(':productId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get product by ID' })
   @ApiResponse({
     status: 200,
@@ -58,6 +63,8 @@ export class ProductController {
   }
 
   @Patch(':productId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Update product' })
   @ApiResponse({
     status: 200,
@@ -79,6 +86,8 @@ export class ProductController {
   }
 
   @Delete(':productId')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete product by ID' })
   @ApiResponse({
     status: 200,
