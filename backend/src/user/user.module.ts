@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtModuleAsyncOptions } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CryptoModule } from '../crypto/crypto.module';
+import { JwtAccessStrategy } from './authentication/jwt-access.strategy';
 import { LocalStrategy } from './authentication/local.strategy';
 import { UserRepository } from './entity/user.repository';
 import { UserModel, UserSchema } from './entity/user.schema';
@@ -14,9 +15,10 @@ import { UserService } from './user.service';
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
     CryptoModule,
     JwtModule.registerAsync(getJwtAsyncOptions()),
+    ConfigModule,
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository, LocalStrategy],
+  providers: [UserService, UserRepository, LocalStrategy, JwtAccessStrategy],
 })
 export class UserModule {}
 

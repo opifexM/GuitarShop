@@ -9,8 +9,11 @@ import {
   Post, Req, UseGuards
 } from '@nestjs/common';
 import { fillDto } from 'shared/lib/common';
+import { TokenPayload } from 'shared/type/token-payload.interface';
 import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
+import { JwtAuthGuard } from './authentication/jwt-auth.guard';
 import { LocalAuthGuard } from './authentication/local-auth.guard';
+import { RequestWithTokenPayload } from './authentication/request-with-token-payload.interface';
 import { RequestWithUser } from './authentication/request-with-user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
@@ -18,7 +21,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { LoggedRdo } from './rdo/logged.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { UserService } from './user.service';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('users')
 @Controller('users')
@@ -110,5 +113,19 @@ export class UserController {
     const userToken = await this.userService.createUserToken(user);
 
     return fillDto(LoggedRdo, { ...userToken, ...user.toPOJO() });
+  }
+
+  @Post('check')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Check validity of the access token' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Access token is valid' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized if token is invalid or expired' })
+  public async checkToken(
+    @Req() { user: payload }: RequestWithTokenPayload
+  ): Promise<TokenPayload> {
+    this.logger.log('Check JWT access token');
+
+    return payload;
   }
 }
