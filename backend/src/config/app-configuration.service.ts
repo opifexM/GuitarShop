@@ -36,4 +36,12 @@ export class AppConfiguration {
   public get mongoAuthBase(): string {
     return this.configService.get<string>('MONGO_AUTH_BASE');
   }
+
+  public get accessTokenSecret(): string {
+    return this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET');
+  }
+
+  public get accessTokenExpiresIn(): string {
+    return this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRES_IN');
+  }
 }

@@ -27,6 +27,12 @@ export class ServerEnvConfig {
 
   @IsString()
   MONGO_AUTH_BASE: string;
+
+  @IsString()
+  JWT_ACCESS_TOKEN_SECRET: string;
+
+  @IsString()
+  JWT_ACCESS_TOKEN_EXPIRES_IN: string;
 }
 
 export function validate(config: Record<string, unknown>) {

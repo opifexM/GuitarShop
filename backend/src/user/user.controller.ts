@@ -2,19 +2,23 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, HttpStatus,
   Logger,
   Param,
   Patch,
-  Post,
+  Post, Req, UseGuards
 } from '@nestjs/common';
 import { fillDto } from 'shared/lib/common';
 import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
+import { LocalAuthGuard } from './authentication/local-auth.guard';
+import { RequestWithUser } from './authentication/request-with-user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoggedRdo } from './rdo/logged.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { UserService } from './user.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('users')
 @Controller('users')
@@ -89,5 +93,22 @@ export class UserController {
     this.logger.log(`User deleted with ID: '${deletedUser.id}'`);
 
     return fillDto(UserRdo, deletedUser.toPOJO());
+  }
+
+  @Post('login')
+  @UseGuards(LocalAuthGuard)
+  @ApiOperation({ summary: 'Log in a user' })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Login successful', type: LoginDto })
+  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'User password is empty' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
+  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'User password is wrong' })
+  public async login(
+    @Req() { user }: RequestWithUser
+  ): Promise<LoggedRdo> {
+    this.logger.log(`User logged in successfully: ${user.email}`);
+    const userToken = await this.userService.createUserToken(user);
+
+    return fillDto(LoggedRdo, { ...userToken, ...user.toPOJO() });
   }
 }
