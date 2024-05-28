@@ -12,6 +12,9 @@
     "build": "npm run build --workspaces --if-present",
     "start:backend": "npm run start --workspace backend",
     "build:backend": "npm run build --workspace backend",
+    "cli:backend": "ts-node --project backend/tsconfig.json backend/src/main-cli.ts",
+    "cli:backend-help": "ts-node --project backend/tsconfig.json backend/src/main-cli.ts --help",
+    "cli:backend-generate": "ts-node --project backend/tsconfig.json backend/src/main-cli.ts generate 10 'mongodb://admin:123456@localhost:27017/guitar-shop?authSource=admin'",
     "start:frontend": "npm run start --workspace frontend",
     "build:frontend": "npm run build --workspace frontend",
     "server:docker-up": "docker compose --file ./backend/docker-compose.dev.yml --env-file ./backend/server.env --project-name \"guitar-shop\" up -d",
@@ -20,11 +23,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "bcrypt": "^5.1.1"
-  },
-  "devDependencies": {
-    "@types/bcrypt": "^5.0.2"
-  }
+  "description": ""
 }

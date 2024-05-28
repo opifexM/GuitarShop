@@ -7,6 +7,7 @@ const root = ReactDOM.createRoot(
 );
 
 const user: User = {
+  password: '',
   id: '1',
   name: 'John Doe',
   email: 'john.doe@example.com'
