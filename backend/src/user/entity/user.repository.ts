@@ -30,9 +30,7 @@ export class UserRepository {
     const entityToLog = { ...entity };
     entityToLog.password = '';
 
-    this.logger.log(
-      `Saving new entity: ${JSON.stringify(entityToLog)}`,
-    );
+    this.logger.log(`Saving new entity: ${JSON.stringify(entityToLog)}`);
     const newEntity = new this.model(entity.toPOJO());
     const savedEntity = await newEntity.save();
     newEntity.id = savedEntity.id;

@@ -27,9 +27,14 @@ export class EmailService {
         subject: this.EMAIL_SUBJECT,
         html: htmlContent,
       });
-      this.logger.log(`Email notification sent successfully to: '${user.email}'`);
+      this.logger.log(
+        `Email notification sent successfully to: '${user.email}'`,
+      );
     } catch (error) {
-      this.logger.error(`Failed to send email to: '${user.email}'`, error.stack);
+      this.logger.error(
+        `Failed to send email to: '${user.email}'`,
+        error.stack,
+      );
     }
   }
 }

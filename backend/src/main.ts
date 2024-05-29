@@ -32,7 +32,8 @@ async function bootstrap() {
   );
   Logger.log(
     `📚 Swagger is available on: http://localhost:${configService.appPort}/spec`,
-  );  Logger.log(
+  );
+  Logger.log(
     `📚 Swagger YAML is available on: http://localhost:${configService.appPort}/spec-yaml`,
   );
 }

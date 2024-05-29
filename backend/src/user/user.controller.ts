@@ -2,11 +2,14 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpStatus,
+  Get,
+  HttpStatus,
   Logger,
   Param,
   Patch,
-  Post, Req, UseGuards
+  Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { fillDto } from 'shared/lib/common';
 import { TokenPayload } from 'shared/type/token-payload.interface';
@@ -21,7 +24,13 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { LoggedRdo } from './rdo/logged.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { UserService } from './user.service';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiTags('users')
 @Controller('users')
@@ -108,13 +117,21 @@ export class UserController {
   @UseGuards(LocalAuthGuard)
   @ApiOperation({ summary: 'Log in a user' })
   @ApiBody({ type: LoginDto })
-  @ApiResponse({ status: HttpStatus.OK, description: 'Login successful', type: LoginDto })
-  @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'User password is empty' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Login successful',
+    type: LoginDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: 'User password is empty',
+  })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'User not found' })
-  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'User password is wrong' })
-  public async login(
-    @Req() { user }: RequestWithUser
-  ): Promise<LoggedRdo> {
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'User password is wrong',
+  })
+  public async login(@Req() { user }: RequestWithUser): Promise<LoggedRdo> {
     this.logger.log(`User logged in successfully: ${user.email}`);
     const userToken = await this.userService.createUserToken(user);
 
@@ -126,9 +143,12 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Check validity of the access token' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Access token is valid' })
-  @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: 'Unauthorized if token is invalid or expired' })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Unauthorized if token is invalid or expired',
+  })
   public async checkToken(
-    @Req() { user: payload }: RequestWithTokenPayload
+    @Req() { user: payload }: RequestWithTokenPayload,
   ): Promise<TokenPayload> {
     this.logger.log('Check JWT access token');
 

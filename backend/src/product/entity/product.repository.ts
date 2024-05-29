@@ -93,7 +93,6 @@ export class ProductRepository {
     guitarType,
     guitarStringType,
   }: ProductQuery): Promise<PaginationResult<ProductEntity>> {
-
     const sortCriteria: { [key: string]: 'asc' | 'desc' } = {};
     if (sortType === SortType.BY_PRICE) {
       sortCriteria['price'] = sortDirection;

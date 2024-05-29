@@ -68,6 +68,4 @@ export class AppConfiguration {
   public get emailUserFrom(): string {
     return this.configService.get<string>('EMAIL_FROM');
   }
-
-
 }
