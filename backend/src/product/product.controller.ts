@@ -6,15 +6,24 @@ import {
   Logger,
   Param,
   Patch,
-  Post, UseGuards
+  Post,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { fillDto } from 'shared/lib/common';
 import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
 import { JwtAuthGuard } from '../user/authentication/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductQuery } from './product.query';
 import { ProductService } from './product.service';
+import { ProductPaginationRdo } from './rdo/product-pagination.rdo';
 import { ProductRdo } from './rdo/product.rdo';
 
 @ApiTags('products')
@@ -60,6 +69,31 @@ export class ProductController {
     const foundProduct = await this.productService.findProductById(productId);
 
     return fillDto(ProductRdo, foundProduct.toPOJO());
+  }
+
+  @Get('')
+  @ApiOperation({ summary: 'Get all product list' })
+  @ApiResponse({
+    status: 200,
+    description: 'The products list has been successfully retrieved.',
+    type: ProductPaginationRdo,
+  })
+  @ApiResponse({ status: 404, description: 'Products not found.' })
+  public async getAllProduct(
+    @Query() query: ProductQuery,
+  ): Promise<ProductPaginationRdo> {
+    this.logger.log(
+      `Retrieving products with query: ${JSON.stringify(query)}'`,
+    );
+    const productPagination =
+      await this.productService.findProductByQuery(query);
+
+    const transformedProductPagination = {
+      ...productPagination,
+      entities: productPagination.entities.map((product) => product.toPOJO()),
+    };
+
+    return fillDto(ProductPaginationRdo, transformedProductPagination);
   }
 
   @Patch(':productId')

@@ -1,14 +1,18 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { PaginationResult } from 'shared/type/pagination.interface';
+import { SortDirection } from 'shared/type/sort-direction.interface';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entity/product.entity';
 import { ProductFactory } from './entity/product.factory';
 import { ProductRepository } from './entity/product.repository';
-import { PRODUCT_NOT_FOUND } from './product.constant';
+import { PRODUCT_LIMIT, PRODUCT_NOT_FOUND } from './product.constant';
+import { ProductQuery } from './product.query';
 
 @Injectable()
 export class ProductService {
   private readonly logger = new Logger(ProductService.name);
+  private readonly defaultPage = 1;
 
   constructor(private readonly productRepository: ProductRepository) {}
 
@@ -90,5 +94,30 @@ export class ProductService {
 
   public async exists(productId: string): Promise<boolean> {
     return this.productRepository.exists(productId);
+  }
+
+  public async findProductByQuery(
+    productQuery?: ProductQuery,
+  ): Promise<PaginationResult<ProductEntity>> {
+    this.logger.log('Finding all products');
+
+    const limit = Math.min(
+      productQuery?.limit ?? Number.MAX_VALUE,
+      PRODUCT_LIMIT,
+    );
+    const sortDirection = productQuery?.sortDirection ?? SortDirection.DESC;
+    const page = productQuery?.page ?? this.defaultPage;
+
+    const productPagination = await this.productRepository.findAllByQuery({
+      limit,
+      sortDirection,
+      page,
+    });
+    if (!productPagination.entities) {
+      this.logger.warn('No products found');
+      throw new NotFoundException(PRODUCT_NOT_FOUND);
+    }
+
+    return productPagination;
   }
 }

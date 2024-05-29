@@ -2,6 +2,9 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Document, Model } from 'mongoose';
+import { PaginationResult } from 'shared/type/pagination.interface';
+import { SortDirection } from 'shared/type/sort-direction.interface';
+import { ProductQuery } from '../product.query';
 import { ProductEntity } from './product.entity';
 import { ProductFactory } from './product.factory';
 import { ProductModel } from './product.schema';
@@ -80,5 +83,34 @@ export class ProductRepository {
     const result = await this.model.exists(new ObjectId(id));
 
     return !!result;
+  }
+
+  public async findAllByQuery({
+    limit,
+    sortDirection,
+    page,
+  }: ProductQuery): Promise<PaginationResult<ProductEntity>> {
+    this.logger.log('Retrieving products');
+
+    const [products, productCount] = await Promise.all([
+      this.model
+        .find()
+        .sort({ createdAt: sortDirection })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .exec(),
+      this.model.countDocuments().exec(),
+    ]);
+    this.logger.log(`Retrieved ${products.length} product`);
+
+    return {
+      entities: products.map((product) =>
+        this.createEntityFromDocument(product),
+      ),
+      totalPages: Math.ceil(productCount / limit),
+      currentPage: page,
+      totalItems: productCount,
+      itemsPerPage: limit,
+    };
   }
 }
