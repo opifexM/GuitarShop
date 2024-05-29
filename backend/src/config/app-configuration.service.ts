@@ -44,4 +44,30 @@ export class AppConfiguration {
   public get accessTokenExpiresIn(): string {
     return this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRES_IN');
   }
+
+  public get serverSmtpPort(): number {
+    return this.configService.get<number>('SERVER_SMTP_PORT');
+  }
+
+  public get serverSmtpPortUi(): number {
+    return this.configService.get<number>('SERVER_SMTP_PORT_UI');
+  }
+
+  public get emailSmtpHost(): string {
+    return this.configService.get<string>('EMAIL_SMTP_HOST');
+  }
+  public get emailSmtpPort(): number {
+    return this.configService.get<number>('EMAIL_SMTP_PORT');
+  }
+  public get emailUserName(): string {
+    return this.configService.get<string>('EMAIL_USER_NAME');
+  }
+  public get emailUserPassword(): string {
+    return this.configService.get<string>('EMAIL_USER_PASSWORD');
+  }
+  public get emailUserFrom(): string {
+    return this.configService.get<string>('EMAIL_FROM');
+  }
+
+
 }

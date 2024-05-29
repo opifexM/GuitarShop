@@ -10,6 +10,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Token } from 'shared/type/token.interface';
 import { BcryptCrypto } from '../crypto/bcrypt.crypto';
+import { EmailService } from '../email/email.service';
 import { createJWTPayload } from './authentication/jwt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
@@ -31,6 +32,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
     private readonly bcryptCrypto: BcryptCrypto,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
   ) {}
 
   public async createUser(dto: CreateUserDto): Promise<UserEntity> {
@@ -54,7 +56,7 @@ export class UserService {
     const createdUser = await this.userRepository.save(userEntity);
     this.logger.log(`User created with ID: '${createdUser.id}'`);
 
-    //todo email
+    await this.emailService.sendNotifyNewUserEmail(userEntity);
 
     return createdUser;
   }

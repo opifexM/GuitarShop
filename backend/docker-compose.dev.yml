@@ -2,7 +2,7 @@ services:
   guitar-shop.server.mongo:
     image: mongo:7.0.9
     restart: always
-    container_name: guitar-shop-server_mongoDb
+    container_name: "guitar-shop-server_mongoDb"
 
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
@@ -13,6 +13,16 @@ services:
       - ${MONGO_PORT}:27017
     volumes:
       - guitar_shop_server_data:/data/db
+
+  guitar-shop.server.fakesmtp:
+    image: gessnerfl/fake-smtp-server:2.2.1
+    container_name: "guitar-shop-server_fakesmtp"
+    restart: always
+
+    hostname: "guitar-shop-server.fakesmtp"
+    ports:
+      - ${SERVER_SMTP_PORT}:8025
+      - ${SERVER_SMTP_PORT_UI}:8080
 
 volumes:
   guitar_shop_server_data:

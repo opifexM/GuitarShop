@@ -33,6 +33,27 @@ export class ServerEnvConfig {
 
   @IsString()
   JWT_ACCESS_TOKEN_EXPIRES_IN: string;
+
+  @Min(1)
+  SERVER_SMTP_PORT: number;
+
+  @Min(1)
+  SERVER_SMTP_PORT_UI: number;
+
+  @IsString()
+  EMAIL_SMTP_HOST: string;
+
+  @Min(1)
+  EMAIL_SMTP_PORT: number;
+
+  @IsString()
+  EMAIL_USER_NAME: string;
+
+  @IsString()
+  EMAIL_USER_PASSWORD: string;
+
+  @IsString()
+  EMAIL_FROM: string;
 }
 
 export function validate(config: Record<string, unknown>) {

@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtModuleAsyncOptions } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CryptoModule } from '../crypto/crypto.module';
+import { EmailModule } from '../email/email.module';
 import { JwtAccessStrategy } from './authentication/jwt-access.strategy';
 import { LocalStrategy } from './authentication/local.strategy';
 import { UserRepository } from './entity/user.repository';
@@ -16,6 +17,7 @@ import { UserService } from './user.service';
     CryptoModule,
     JwtModule.registerAsync(getJwtAsyncOptions()),
     ConfigModule,
+    EmailModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository, LocalStrategy, JwtAccessStrategy],
