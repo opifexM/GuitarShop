@@ -23,6 +23,25 @@ GET {{host}}/api/products/{{productId}} HTTP/1.1
 ### Get products
 GET {{host}}/api/products HTTP/1.1
 
+### Get products with filter guitarType
+@guitarType = акустика
+GET {{host}}/api/products?guitarType={{guitarType}} HTTP/1.1
+
+### Get products with filter guitarType and guitarStringType
+@guitarStringType = 4
+GET {{host}}/api/products?guitarType={{guitarType}}&guitarStringType={{guitarStringType}} HTTP/1.1
+
+### Get products with sort des
+@sortType = BY_PRICE
+GET {{host}}/api/products?sortType={{sortType}} HTTP/1.1
+
+### Get products with sort asc
+@sortDirection = asc
+GET {{host}}/api/products?sortType={{sortType}}&sortDirection={{sortDirection}} HTTP/1.1
+
+### Get products with sort and filter
+GET {{host}}/api/products?sortType={{sortType}}&sortDirection={{sortDirection}}&guitarStringType={{guitarStringType}} HTTP/1.1
+
 
 ### Update product
 PATCH {{host}}/api/products/{{productId}} HTTP/1.1

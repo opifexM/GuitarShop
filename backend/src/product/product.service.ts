@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PaginationResult } from 'shared/type/pagination.interface';
 import { SortDirection } from 'shared/type/sort-direction.interface';
+import { SortType } from 'shared/type/sort-type.enum';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductEntity } from './entity/product.entity';
@@ -105,13 +106,19 @@ export class ProductService {
       productQuery?.limit ?? Number.MAX_VALUE,
       PRODUCT_LIMIT,
     );
-    const sortDirection = productQuery?.sortDirection ?? SortDirection.DESC;
     const page = productQuery?.page ?? this.defaultPage;
+    const sortDirection = productQuery?.sortDirection ?? SortDirection.DESC;
+    const sortType = productQuery?.sortType ?? SortType.BY_DATE;
+    const guitarType = productQuery?.guitarType;
+    const guitarStringType = productQuery?.guitarStringType;
 
     const productPagination = await this.productRepository.findAllByQuery({
       limit,
-      sortDirection,
       page,
+      sortDirection,
+      sortType,
+      guitarType,
+      guitarStringType,
     });
     if (!productPagination.entities) {
       this.logger.warn('No products found');

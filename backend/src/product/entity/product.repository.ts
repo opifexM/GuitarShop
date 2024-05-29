@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Document, Model } from 'mongoose';
 import { PaginationResult } from 'shared/type/pagination.interface';
-import { SortDirection } from 'shared/type/sort-direction.interface';
+import { SortType } from 'shared/type/sort-type.enum';
 import { ProductQuery } from '../product.query';
 import { ProductEntity } from './product.entity';
 import { ProductFactory } from './product.factory';
@@ -87,21 +87,41 @@ export class ProductRepository {
 
   public async findAllByQuery({
     limit,
-    sortDirection,
     page,
+    sortDirection,
+    sortType,
+    guitarType,
+    guitarStringType,
   }: ProductQuery): Promise<PaginationResult<ProductEntity>> {
-    this.logger.log('Retrieving products');
+
+    const sortCriteria: { [key: string]: 'asc' | 'desc' } = {};
+    if (sortType === SortType.BY_PRICE) {
+      sortCriteria['price'] = sortDirection;
+    } else {
+      sortCriteria['postedAt'] = sortDirection;
+    }
+
+    const filterCriteria: { [key: string]: any } = {};
+    if (guitarType) {
+      filterCriteria['guitarType'] = guitarType;
+    }
+    if (guitarStringType) {
+      filterCriteria['guitarStringType'] = guitarStringType;
+    }
+    this.logger.log(
+      `Retrieving products filterCriteria: '${JSON.stringify(filterCriteria)}', sortCriteria: '${JSON.stringify(sortCriteria)}'`,
+    );
 
     const [products, productCount] = await Promise.all([
       this.model
-        .find()
-        .sort({ createdAt: sortDirection })
+        .find(filterCriteria)
+        .sort(sortCriteria)
         .skip((page - 1) * limit)
         .limit(limit)
         .exec(),
       this.model.countDocuments().exec(),
     ]);
-    this.logger.log(`Retrieved ${products.length} product`);
+    this.logger.log(`Retrieved [${products.length}] products`);
 
     return {
       entities: products.map((product) =>
