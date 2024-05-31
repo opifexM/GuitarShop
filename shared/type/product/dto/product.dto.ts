@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { GuitarStringType } from 'shared/type/guitar-string-type.enum';
-import { GuitarType } from 'shared/type/guitar-type.enum';
+import { GuitarStringType } from '../guitar-string-type.enum';
+import { GuitarType } from '../guitar-type.enum';
 
-export class ProductRdo {
+export class ProductDto {
   @ApiProperty({
     example: '6655fa9caba40a3fafedcea5',
     description: 'The unique identifier of the product',

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { GuitarStringType } from 'shared/type/guitar-string-type.enum';
-import { GuitarType } from 'shared/type/guitar-type.enum';
+import { GuitarStringType } from 'shared/type/product/guitar-string-type.enum';
+import { GuitarType } from 'shared/type/product/guitar-type.enum';
 
 @Schema({
   collection: 'products',

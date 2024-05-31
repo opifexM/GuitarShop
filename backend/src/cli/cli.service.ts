@@ -4,8 +4,8 @@ import { genSalt, hash } from 'bcrypt';
 import { Command } from 'commander';
 import { Db } from 'mongodb';
 import { connect } from 'mongoose';
-import { GuitarStringType } from 'shared/type/guitar-string-type.enum';
-import { GuitarType } from 'shared/type/guitar-type.enum';
+import { GuitarStringType } from 'shared/type/product/guitar-string-type.enum';
+import { GuitarType } from 'shared/type/product/guitar-type.enum';
 import { PRODUCT } from '../product/entity/product.constant';
 
 const SALT_ROUNDS = 10;

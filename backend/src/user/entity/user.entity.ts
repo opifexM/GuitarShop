@@ -1,5 +1,5 @@
 import { Entity } from 'shared/base/entity';
-import { User } from 'shared/type/user';
+import { User } from 'shared/type/user/user';
 
 export class UserEntity extends Entity implements User {
   name: string;

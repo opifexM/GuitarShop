@@ -1,8 +1,8 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsIn, IsNumber, IsOptional, IsPositive } from 'class-validator';
-import { GuitarStringType } from 'shared/type/guitar-string-type.enum';
-import { GuitarType } from 'shared/type/guitar-type.enum';
+import { GuitarStringType } from 'shared/type/product/guitar-string-type.enum';
+import { GuitarType } from 'shared/type/product/guitar-type.enum';
 import { SortDirection } from 'shared/type/sort-direction.interface';
 import { SortType } from 'shared/type/sort-type.enum';
 

@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UserRdo {
+export class UserDto {
   @ApiProperty({
     example: '60d0fe4f5311236168a109ca',
     description: 'The unique identifier of the user',

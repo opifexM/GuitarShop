@@ -1,14 +1,15 @@
+// @ts-nocheck
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { ProductRdo } from './product.rdo';
+import { ProductDto } from './product.dto';
 
-export class ProductPaginationRdo {
+export class ProductPaginationDto {
   @Expose()
   @ApiProperty({
     description: 'Array of Products entities',
-    type: [ProductRdo],
+    type: [ProductDto],
   })
-  public entities: ProductRdo[];
+  public entities: ProductDto[];
 
   @Expose()
   @ApiProperty({
@@ -16,6 +17,7 @@ export class ProductPaginationRdo {
     example: 5,
   })
   public totalPages: number;
+
 
   @Expose()
   @ApiProperty({

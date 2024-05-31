@@ -1,6 +1,6 @@
 @host = http://localhost:3000
 @userId = 665370cf3c05a9828e60a286
-@accessToken = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU0ZTRkZTFjMjJiMGZjZjYwYjU3YTEiLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3NBIiwiaWF0IjoxNzE2OTM1NTA5LCJleHAiOjE3MTY5Mzg1MDl9.0DszBkcahlaSbYrA6B9CXyCW48_TPMm1GqWtT2VvB4brzOG7TR0okYzHrQd-e9_2gPSdPzi-QmcwjkWatbHDjQ
+@accessToken = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU2NzBmYzAzY2ZmMjNiNzM4NjM0MzMiLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3NBIiwiaWF0IjoxNzE3MTgwMzU2LCJleHAiOjE3MTcxODMzNTZ9.pZdIhDT-VbK_VS40-lQQ5JsJuuYbKca9XbXARY8kxPYIMHa1AR3M8G6gOuXEmjeePqURQU3hrGsnLynvHT5-yA
 
 ### Create a new user
 POST {{host}}/api/users HTTP/1.1
@@ -38,6 +38,7 @@ Content-Type: application/json
   "email": "user2@notfound.local",
   "password": "123456"
 }
+
 
 ### Check JWT token
 POST {{host}}/api/users/check HTTP/1.1

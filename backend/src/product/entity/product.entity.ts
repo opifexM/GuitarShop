@@ -1,7 +1,7 @@
 import { Entity } from 'shared/base/entity';
-import { GuitarStringType } from 'shared/type/guitar-string-type.enum';
-import { GuitarType } from 'shared/type/guitar-type.enum';
-import { Product } from 'shared/type/product';
+import { GuitarStringType } from 'shared/type/product/guitar-string-type.enum';
+import { GuitarType } from 'shared/type/product/guitar-type.enum';
+import { Product } from 'shared/type/product/product';
 
 export class ProductEntity extends Entity implements Product {
   article: string;

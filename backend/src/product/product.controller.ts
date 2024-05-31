@@ -17,14 +17,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { fillDto } from 'shared/lib/common';
+import { ProductDto } from 'shared/type/product/dto/product.dto';
 import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
 import { JwtAuthGuard } from '../user/authentication/jwt-auth.guard';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateProductDto } from 'shared/type/product/dto/create-product.dto';
+import { UpdateProductDto } from 'shared/type/product/dto/update-product.dto';
 import { ProductQuery } from './product.query';
 import { ProductService } from './product.service';
-import { ProductPaginationRdo } from './rdo/product-pagination.rdo';
-import { ProductRdo } from './rdo/product.rdo';
+import { ProductPaginationDto } from 'shared/type/product/dto/product-pagination.dto';
 
 @ApiTags('products')
 @Controller('products')
@@ -40,16 +40,16 @@ export class ProductController {
   @ApiResponse({
     status: 201,
     description: 'The product has been successfully created.',
-    type: ProductRdo,
+    type: ProductDto,
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   public async createProduct(
     @Body() dto: CreateProductDto,
-  ): Promise<ProductRdo> {
+  ): Promise<ProductDto> {
     this.logger.log(`Creating new product with title: '${dto.title}'`);
     const createdProduct = await this.productService.createProduct(dto);
 
-    return fillDto(ProductRdo, createdProduct.toPOJO());
+    return fillDto(ProductDto, createdProduct.toPOJO());
   }
 
   @Get(':productId')
@@ -59,16 +59,16 @@ export class ProductController {
   @ApiResponse({
     status: 200,
     description: 'The product has been successfully retrieved.',
-    type: ProductRdo,
+    type: ProductDto,
   })
   @ApiResponse({ status: 404, description: 'Product not found.' })
   public async getProduct(
     @Param('productId', MongoIdValidationPipe) productId: string,
-  ): Promise<ProductRdo> {
+  ): Promise<ProductDto> {
     this.logger.log(`Retrieving product with ID: '${productId}'`);
     const foundProduct = await this.productService.findProductById(productId);
 
-    return fillDto(ProductRdo, foundProduct.toPOJO());
+    return fillDto(ProductDto, foundProduct.toPOJO());
   }
 
   @Get('')
@@ -76,12 +76,12 @@ export class ProductController {
   @ApiResponse({
     status: 200,
     description: 'The products list has been successfully retrieved.',
-    type: ProductPaginationRdo,
+    type: ProductPaginationDto,
   })
   @ApiResponse({ status: 404, description: 'Products not found.' })
   public async getAllProduct(
     @Query() query: ProductQuery,
-  ): Promise<ProductPaginationRdo> {
+  ): Promise<ProductPaginationDto> {
     this.logger.log(
       `Retrieving products with query: ${JSON.stringify(query)}'`,
     );
@@ -93,7 +93,7 @@ export class ProductController {
       entities: productPagination.entities.map((product) => product.toPOJO()),
     };
 
-    return fillDto(ProductPaginationRdo, transformedProductPagination);
+    return fillDto(ProductPaginationDto, transformedProductPagination);
   }
 
   @Patch(':productId')
@@ -103,20 +103,20 @@ export class ProductController {
   @ApiResponse({
     status: 200,
     description: 'The product has been successfully updated.',
-    type: ProductRdo,
+    type: ProductDto,
   })
   @ApiResponse({ status: 404, description: 'Product not found.' })
   public async updateProduct(
     @Param('productId', MongoIdValidationPipe) productId: string,
     @Body() dto: UpdateProductDto,
-  ): Promise<ProductRdo> {
+  ): Promise<ProductDto> {
     this.logger.log(`Updating product with ID '${productId}'`);
     const updatedProduct = await this.productService.updateProductById(
       productId,
       dto,
     );
 
-    return fillDto(ProductRdo, updatedProduct.toPOJO());
+    return fillDto(ProductDto, updatedProduct.toPOJO());
   }
 
   @Delete(':productId')
@@ -126,17 +126,17 @@ export class ProductController {
   @ApiResponse({
     status: 200,
     description: 'The product has been successfully deleted.',
-    type: ProductRdo,
+    type: ProductDto,
   })
   @ApiResponse({ status: 404, description: 'Product not found.' })
   public async deleteProduct(
     @Param('productId', MongoIdValidationPipe) productId: string,
-  ): Promise<ProductRdo> {
+  ): Promise<ProductDto> {
     this.logger.log(`Attempting to delete product with ID: ${productId}`);
     const deletedProduct =
       await this.productService.deleteProductById(productId);
     this.logger.log(`Product deleted with ID: '${deletedProduct.id}'`);
 
-    return fillDto(ProductRdo, deletedProduct.toPOJO());
+    return fillDto(ProductDto, deletedProduct.toPOJO());
   }
 }

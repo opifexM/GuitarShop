@@ -1,28 +1,26 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString, Length } from 'class-validator';
-import { USER } from '../entity/user.constant';
+// @ts-nocheck
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsString, Length } from 'class-validator';
+import { USER } from '../../../../backend/src/user/entity/user.constant';
 
-export class UpdateUserDto {
-  @IsOptional()
+export class CreateUserDto {
   @IsEmail()
-  @ApiPropertyOptional({
+  @ApiProperty({
     example: 'user@example.com',
     description: 'The email of the user',
   })
-  public email?: string;
+  public email: string;
 
-  @IsOptional()
   @IsString()
   @Length(USER.NAME.MIN, USER.NAME.MAX)
-  @ApiPropertyOptional({
+  @ApiProperty({
     example: 'John Doe',
     description: 'The name of the user',
     minLength: USER.NAME.MIN,
     maxLength: USER.NAME.MAX,
   })
-  public name?: string;
+  public name: string;
 
-  @IsOptional()
   @IsString()
   @Length(USER.PASSWORD.MIN, USER.PASSWORD.MAX)
   @ApiProperty({
@@ -31,5 +29,5 @@ export class UpdateUserDto {
     minLength: USER.PASSWORD.MIN,
     maxLength: USER.PASSWORD.MAX,
   })
-  public password?: string;
+  public password: string;
 }
