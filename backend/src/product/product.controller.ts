@@ -72,6 +72,8 @@ export class ProductController {
   }
 
   @Get('')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get all product list' })
   @ApiResponse({
     status: 200,

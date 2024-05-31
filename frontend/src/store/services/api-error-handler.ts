@@ -13,8 +13,16 @@ function handleApiError(error: unknown): string {
   if (error instanceof AxiosError && error.response) {
     const responseData = error.response.data as ApiErrorResponse;
     const { message, details } = responseData;
-    const additionalMessages = details?.map((detail) => detail.messages.join(' ')).join(' ') ?? '';
-    return additionalMessages ? `${message} ${additionalMessages}` : message;
+
+    let detailedMessages = '';
+    detailedMessages = Array.isArray(message) ? message.join(' ') : message;
+
+    if (details?.length) {
+      const additionalMessages = details.map((detail) => detail.messages.join(' ')).join(' ');
+      detailedMessages += ` ${additionalMessages}`;
+    }
+
+    return detailedMessages;
   }
   return 'An unexpected error occurred while communicating with the API.';
 }

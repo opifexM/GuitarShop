@@ -1,11 +1,15 @@
+import { Link } from 'react-router-dom';
 import { Product } from 'shared/type/product/product.ts';
+import { AppRoute } from '../../const.ts';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: Readonly<ProductCardProps>) {
-  const {photoId, title, postedAt, price} = product;
+  const { photoId, title, postedAt, price, id } = product;
+
+  const productLink = `${AppRoute.Product}/${id}`;
   const photoIdParts = photoId.split('.');
   const photoFileName = photoIdParts[0] ?? '';
   const photoFileExtension = photoIdParts[1] ?? '';
@@ -18,16 +22,24 @@ export function ProductCard({ product }: Readonly<ProductCardProps>) {
 
   return (
     <li className="catalog-item">
-      <div className="catalog-item__data"><img src={`img/content/${photoFileName}.${photoFileExtension}`}
-        srcSet={`img/content/${photoFileName}@2x.${photoFileExtension} 2x`} width="36"
-        height="93" alt={title}
-      />
-      <div className="catalog-item__data-wrapper">
-        <a className="link" href="./product.html"><p className="catalog-item__data-title">{title}</p></a>
-        <br />
-        <p className="catalog-item__data-date">{`Дата добавления ${formattedDate}`}</p>
-        <p className="catalog-item__data-price">{`${formattedPrice} ₽`}</p>
-      </div>
+      <div className="catalog-item__data">
+        <img src={`img/content/${photoFileName}.${photoFileExtension}`}
+          srcSet={`img/content/${photoFileName}@2x.${photoFileExtension} 2x`}
+          width="36"
+          height="93"
+          alt={title}
+        />
+        <div className="catalog-item__data-wrapper">
+          <Link
+            className="link"
+            to={productLink}
+          >
+            <p className="catalog-item__data-title">{title}</p>
+          </Link>
+          <br />
+          <p className="catalog-item__data-date">{`Дата добавления ${formattedDate}`}</p>
+          <p className="catalog-item__data-price">{`${formattedPrice} ₽`}</p>
+        </div>
       </div>
       <div className="catalog-item__buttons">
         <a className="button button--small button--black-border"

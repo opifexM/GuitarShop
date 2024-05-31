@@ -1,8 +1,10 @@
 export const AppRoute = {
   Main: '/',
   Login: '/login',
+  Register: '/register',
   User: '/user',
   UserId: '/user/:id',
+  Product: '/product',
   ProductId: '/product/:id',
 } as const;
 export type AppRouteType = typeof AppRoute[keyof typeof AppRoute];

@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Product } from 'shared/type/product/product.ts';
 import { AuthorizationStatus, AuthorizationStatusType, NameSpace } from '../../const.ts';
-import { fetchProductsAction } from '../api-action/data-api-actions.ts';
-import { checkAuthAction, loginAction } from '../api-action/user-api-actions.ts';
+import { fetchProductDetailAction, fetchProductsAction } from '../api-action/data-api-actions.ts';
+import { checkAuthAction, loginAction, registerAction } from '../api-action/user-api-actions.ts';
 import { dropToken, saveToken } from '../services/token.ts';
 
 interface ApiCommunicationState {
   products: Product[];
+  currentProduct: Product | null;
   isLoading: boolean;
   userName: string;
   userLogin: string;
@@ -16,6 +17,7 @@ interface ApiCommunicationState {
 
 const initialState: ApiCommunicationState = {
   products: [],
+  currentProduct: null,
   isLoading: false,
   userName: '',
   userLogin: '',
@@ -26,10 +28,27 @@ const initialState: ApiCommunicationState = {
 export const apiCommunicationSlice = createSlice({
   name: NameSpace.ApiCommunication,
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(registerAction.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerAction.rejected, (state) => {
+        dropToken();
+        state.userLogin = '';
+        state.userId = '';
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.isLoading = false;
+      })
+      .addCase(registerAction.fulfilled, (state) => {
+        dropToken();
+        state.userLogin = '';
+        state.userId = '';
+        state.authorizationStatus = AuthorizationStatus.NoAuth;
+        state.isLoading = false;
+      })
+
       .addCase(loginAction.pending, (state) => {
         state.isLoading = true;
       })
@@ -73,10 +92,23 @@ export const apiCommunicationSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchProductsAction.rejected, (state) => {
+        state.products = [];
         state.isLoading = false;
       })
       .addCase(fetchProductsAction.fulfilled, (state, action) => {
         state.products = action.payload.entities;
+        state.isLoading = false;
+      })
+
+      .addCase(fetchProductDetailAction.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProductDetailAction.rejected, (state) => {
+        state.currentProduct = null;
+        state.isLoading = false;
+      })
+      .addCase(fetchProductDetailAction.fulfilled, (state, action) => {
+        state.currentProduct = action.payload;
         state.isLoading = false;
       });
   }

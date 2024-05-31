@@ -30,11 +30,11 @@ export function ProductPage() {
             <div className="catalog">
               <ProductFilter />
               <ProductSort />
-              <ProductList products={products}/>
+              <ProductList products={products} />
             </div>
             <button className="button product-list__button button--red button--big">Добавить новый товар</button>
             <div className="pagination product-list__pagination">
-              <ProductPagination/>
+              <ProductPagination />
             </div>
           </div>
         </section>
