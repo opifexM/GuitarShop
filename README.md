@@ -1,3 +1,5 @@
+[![Node CI](https://github.com/opifexM/GuitarShop/actions/workflows/check.yml/badge.svg)](https://github.com/opifexM/GuitarShop/actions/workflows/check.yml)
+
 # Guitar Shop
 
 Guitar Shop is a modern web application for real-time messaging built with React. It includes user management, product management, authentication, and database integration.
