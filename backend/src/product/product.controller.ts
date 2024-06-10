@@ -17,14 +17,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { fillDto } from 'shared/lib/common';
+import { CreateProductDto } from 'shared/type/product/dto/create-product.dto';
+import { ProductPaginationDto } from 'shared/type/product/dto/product-pagination.dto';
 import { ProductDto } from 'shared/type/product/dto/product.dto';
+import { UpdateProductDto } from 'shared/type/product/dto/update-product.dto';
+import { ProductQuery } from 'shared/type/product/product.query';
 import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
 import { JwtAuthGuard } from '../user/authentication/jwt-auth.guard';
-import { CreateProductDto } from 'shared/type/product/dto/create-product.dto';
-import { UpdateProductDto } from 'shared/type/product/dto/update-product.dto';
-import { ProductQuery } from './product.query';
 import { ProductService } from './product.service';
-import { ProductPaginationDto } from 'shared/type/product/dto/product-pagination.dto';
 
 @ApiTags('products')
 @Controller('products')

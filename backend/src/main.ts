@@ -1,8 +1,8 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AppConfiguration } from './config/app-configuration.service';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,6 +27,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('User API')
     .setDescription('API description for User operations')
+    .addBearerAuth()
     .setVersion('1.0')
     .build();
 

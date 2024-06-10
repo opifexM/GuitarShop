@@ -1,4 +1,5 @@
-@host = http://localhost:3000
+#@host = http://localhost:3000
+@host = http://opifex.me:3000
 @userId = 665370cf3c05a9828e60a286
 @accessToken = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU2NzBmYzAzY2ZmMjNiNzM4NjM0MzMiLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3NBIiwiaWF0IjoxNzE3MTgwMzU2LCJleHAiOjE3MTcxODMzNTZ9.pZdIhDT-VbK_VS40-lQQ5JsJuuYbKca9XbXARY8kxPYIMHa1AR3M8G6gOuXEmjeePqURQU3hrGsnLynvHT5-yA
 

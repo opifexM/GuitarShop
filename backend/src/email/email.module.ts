@@ -3,8 +3,8 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { MailerAsyncOptions } from '@nestjs-modules/mailer/dist/interfaces/mailer-async-options.interface';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EmailService } from './email.service';
 import { resolve } from 'node:path';
+import { EmailService } from './email.service';
 
 @Module({
   imports: [MailerModule.forRootAsync(getMailerOptions())],

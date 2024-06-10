@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Footer } from '../../component/footer/footer.tsx';
 import { Header } from '../../component/header/header.tsx';
-import { ProductEdit } from '../../component/product-edit/product-edit.tsx';
+import { ProductDelete } from '../../component/product-delete/product-delete.tsx';
 import { AppRoute } from '../../const.ts';
 import { useAppDispatch, useAppSelector } from '../../hook';
 import { fetchProductDetailAction } from '../../store/api-action/data-api-actions.ts';
 import { getCurrentProduct } from '../../store/api-communication/api-communication.selectors.ts';
 
-export function ProductEditPage() {
+export function ProductDeletePage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const currentProduct = useAppSelector(getCurrentProduct);
@@ -41,7 +41,7 @@ export function ProductEditPage() {
                 <Link className="link" to={`${AppRoute.Main}`}>Товар</Link>
               </li>
             </ul>
-            <ProductEdit
+            <ProductDelete
               product={currentProduct}
               id={id}
             />

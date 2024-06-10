@@ -22,15 +22,22 @@ export function RegistrationPage() {
         email: loginRef.current.value,
         password: passwordRef.current.value,
         name: nameRef.current.value
-      })).then(() => {
-        toast.success('Registration is successful', {
-          position: 'top-right'
+      }))
+        .unwrap()
+        .then(() => {
+          toast.success('Registration is successful', {
+            position: 'top-right'
+          });
+          toast.info('Please log in', {
+            position: 'top-right'
+          });
+          navigate(AppRoute.Login);
+        })
+        .catch(() => {
+          toast.error('Registration failed. Please try again.', {
+            position: 'top-right'
+          });
         });
-        toast.info('Please log in', {
-          position: 'top-right'
-        });
-        navigate(AppRoute.Login);
-      });
     }
   };
 

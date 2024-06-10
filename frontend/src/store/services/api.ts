@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { BACKEND_REQUEST_TIMEOUT, BACKEND_URL } from '../../const.ts';
 import { getToken } from './token.ts';
 

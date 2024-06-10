@@ -1,14 +1,6 @@
 // @ts-nocheck
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import {
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Length,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, Length, Max, Min } from 'class-validator';
 import { GuitarStringType } from 'shared/type/product/guitar-string-type.enum';
 import { GuitarType } from 'shared/type/product/guitar-type.enum';
 import { PRODUCT } from '../../../../backend/src/product/entity/product.constant';

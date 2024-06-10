@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsIn, IsNumber, IsOptional, IsPositive } from 'class-validator';
@@ -10,7 +11,7 @@ export class ProductQuery {
   @ApiPropertyOptional({
     description: 'Page number of the product pagination',
     type: Number,
-    example: 1,
+    example: 1
   })
   @IsNumber()
   @IsPositive()
@@ -21,7 +22,7 @@ export class ProductQuery {
   @ApiPropertyOptional({
     description: 'Limit the number of product returned',
     type: Number,
-    example: 10,
+    example: 10
   })
   @IsNumber()
   @IsPositive()
@@ -31,27 +32,30 @@ export class ProductQuery {
 
   @ApiPropertyOptional({
     description: 'Filter product by Guitar Type',
+    isArray: true,
     enum: GuitarType,
-    example: GuitarType.ELECTRO,
+    example: [GuitarType.ELECTRO, GuitarType.ACOUSTIC]
   })
-  @IsIn(Object.values(GuitarType))
+  @IsIn(Object.values(GuitarType), { each: true })
   @IsOptional()
-  public guitarType?: GuitarType;
+  public guitarType?: GuitarType[];
 
   @ApiPropertyOptional({
     description: 'Filter product by Guitar String Type',
+    isArray: true,
     enum: GuitarStringType,
-    example: GuitarStringType.FOUR,
+    example: [GuitarStringType.FOUR, GuitarStringType.SIX]
   })
-  @IsIn(Object.values(GuitarStringType))
-  @Transform(({ value }) => parseInt(value, 10))
   @IsOptional()
-  public guitarStringType?: GuitarStringType;
+  @IsIn(Object.values(GuitarStringType), { each: true })
+  @Transform(({ value }) => value.map((v: string) => parseInt(v, 10)))
+  @IsOptional()
+  public guitarStringType?: GuitarStringType[];
 
   @ApiPropertyOptional({
     description: 'Direction of product sorting (ASC or DESC)',
     enum: SortDirection,
-    example: SortDirection.ASC,
+    example: SortDirection.ASC
   })
   @IsIn(Object.values(SortDirection))
   @IsOptional()
@@ -60,7 +64,7 @@ export class ProductQuery {
   @ApiPropertyOptional({
     description: 'Type of sorting to be applied to the post list',
     enum: SortType,
-    example: SortType.BY_DATE,
+    example: SortType.BY_DATE
   })
   @IsIn(Object.values(SortType))
   @IsOptional()

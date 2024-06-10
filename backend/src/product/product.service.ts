@@ -1,14 +1,20 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PaginationResult } from 'shared/type/pagination.interface';
-import { SortDirection } from 'shared/type/sort-direction.interface';
-import { SortType } from 'shared/type/sort-type.enum';
 import { CreateProductDto } from 'shared/type/product/dto/create-product.dto';
 import { UpdateProductDto } from 'shared/type/product/dto/update-product.dto';
+import { GuitarStringType } from 'shared/type/product/guitar-string-type.enum';
+import { GuitarType } from 'shared/type/product/guitar-type.enum';
+import { ProductQuery } from 'shared/type/product/product.query';
+import { SortDirection } from 'shared/type/sort-direction.interface';
+import { SortType } from 'shared/type/sort-type.enum';
 import { ProductEntity } from './entity/product.entity';
 import { ProductFactory } from './entity/product.factory';
 import { ProductRepository } from './entity/product.repository';
-import { PRODUCT_LIMIT, PRODUCT_NOT_FOUND } from './product.constant';
-import { ProductQuery } from './product.query';
+import {
+  PRODUCT_LIMIT,
+  PRODUCT_NOT_FOUND,
+  PRODUCT_SPECIFICATION,
+} from './product.constant';
 
 @Injectable()
 export class ProductService {
@@ -27,6 +33,17 @@ export class ProductService {
       guitarStringType,
       price,
     } = dto;
+
+    const validGuitarStringTypes = this.getValidGuitarStringTypes();
+    const isValidGuitarType =
+      validGuitarStringTypes[guitarType]?.includes(guitarStringType);
+    if (!isValidGuitarType) {
+      this.logger.warn(
+        `Product type not valid: '${guitarType}', '${guitarStringType}'`,
+      );
+      throw new NotFoundException(PRODUCT_SPECIFICATION);
+    }
+
     this.logger.log(`Attempting to create product with title: ${title}`);
 
     const productData = {
@@ -45,6 +62,24 @@ export class ProductService {
     this.logger.log(`Product created with ID: '${createdProduct.id}'`);
 
     return createdProduct;
+  }
+
+  private getValidGuitarStringTypes() {
+    const validGuitarStringTypes: { [key in GuitarType]: GuitarStringType[] } =
+      {
+        [GuitarType.ACOUSTIC]: [
+          GuitarStringType.SIX,
+          GuitarStringType.SEVEN,
+          GuitarStringType.TWELVE,
+        ],
+        [GuitarType.ELECTRO]: [
+          GuitarStringType.FOUR,
+          GuitarStringType.SIX,
+          GuitarStringType.SEVEN,
+        ],
+        [GuitarType.UKULELE]: [GuitarStringType.FOUR],
+      };
+    return validGuitarStringTypes;
   }
 
   public async findProductById(productId: string): Promise<ProductEntity> {
@@ -75,6 +110,17 @@ export class ProductService {
     if (dto.guitarStringType !== undefined)
       updatedProduct.guitarStringType = dto.guitarStringType;
     if (dto.price !== undefined) updatedProduct.price = dto.price;
+
+    const validGuitarStringTypes = this.getValidGuitarStringTypes();
+    const isValidGuitarType = validGuitarStringTypes[
+      updatedProduct.guitarType
+    ]?.includes(updatedProduct.guitarStringType);
+    if (!isValidGuitarType) {
+      this.logger.warn(
+        `Product type not valid: '${updatedProduct.guitarType}', '${updatedProduct.guitarStringType}'`,
+      );
+      throw new NotFoundException(PRODUCT_SPECIFICATION);
+    }
 
     return this.productRepository.update(productId, updatedProduct);
   }

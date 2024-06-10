@@ -9,7 +9,9 @@ interface ProductCardProps {
 export function ProductCard({ product }: Readonly<ProductCardProps>) {
   const { photoId, title, postedAt, price, id } = product;
 
-  const productLink = `${AppRoute.Product}/${id}`;
+  const productRoute = `${AppRoute.Product}/${id}`;
+  const productEditRoute = `${AppRoute.Product}/${id}/edit`;
+  const productDeleteRoute = `${AppRoute.Product}/${id}/delete`;
   const photoIdParts = photoId.split('.');
   const photoFileName = photoIdParts[0] ?? '';
   const photoFileExtension = photoIdParts[1] ?? '';
@@ -32,7 +34,7 @@ export function ProductCard({ product }: Readonly<ProductCardProps>) {
         <div className="catalog-item__data-wrapper">
           <Link
             className="link"
-            to={productLink}
+            to={productRoute}
           >
             <p className="catalog-item__data-title">{title}</p>
           </Link>
@@ -42,13 +44,19 @@ export function ProductCard({ product }: Readonly<ProductCardProps>) {
         </div>
       </div>
       <div className="catalog-item__buttons">
-        <a className="button button--small button--black-border"
-          href="edit-item.html"
+        <Link
+          to={productEditRoute}
+          className="button button--small button--black-border"
           aria-label="Редактировать товар"
         >Редактировать
-        </a>
-        <button className="button button--small button--black-border" type="submit" aria-label="Удалить товар">Удалить
-        </button>
+        </Link>
+        <Link
+          to={productDeleteRoute}
+          className="button button--small button--black-border"
+          type="submit"
+          aria-label="Удалить товар"
+        >Удалить
+        </Link>
       </div>
     </li>
   );

@@ -14,7 +14,7 @@ function handleApiError(error: unknown): string {
     const responseData = error.response.data as ApiErrorResponse;
     const { message, details } = responseData;
 
-    let detailedMessages = '';
+    let detailedMessages: string;
     detailedMessages = Array.isArray(message) ? message.join(' ') : message;
 
     if (details?.length) {

@@ -1,0 +1,602 @@
+openapi: 3.0.0
+paths:
+  /api/users:
+    post:
+      operationId: UserController_createUser
+      summary: Create a new user
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: The user has been successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '400':
+          description: Bad Request.
+      tags:
+        - users
+  /api/users/{userId}:
+    get:
+      operationId: UserController_getUser
+      summary: Get user by ID
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The user has been successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '404':
+          description: User not found.
+      tags:
+        - users
+      security:
+        - bearer: []
+    patch:
+      operationId: UserController_updateUser
+      summary: Update user
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: The user has been successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '404':
+          description: User not found.
+      tags:
+        - users
+      security:
+        - bearer: []
+    delete:
+      operationId: UserController_deleteUser
+      summary: Delete user by ID
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The user has been successfully deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDto'
+        '404':
+          description: User not found.
+      tags:
+        - users
+      security:
+        - bearer: []
+  /api/users/login:
+    post:
+      operationId: UserController_login
+      summary: Log in a user
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginDto'
+        '400':
+          description: User password is empty
+        '401':
+          description: User password is wrong
+        '404':
+          description: User not found
+      tags:
+        - users
+  /api/users/check:
+    post:
+      operationId: UserController_checkToken
+      summary: Check validity of the access token
+      parameters: []
+      responses:
+        '200':
+          description: Access token is valid
+        '401':
+          description: Unauthorized if token is invalid or expired
+      tags:
+        - users
+      security:
+        - bearer: []
+  /api/products:
+    post:
+      operationId: ProductController_createProduct
+      summary: Create a new product
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductDto'
+      responses:
+        '201':
+          description: The product has been successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '400':
+          description: Bad Request.
+      tags:
+        - products
+      security:
+        - bearer: []
+    get:
+      operationId: ProductController_getAllProduct
+      summary: Get all product list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: Page number of the product pagination
+          example: 1
+          schema:
+            type: number
+        - name: limit
+          required: false
+          in: query
+          description: Limit the number of product returned
+          example: 10
+          schema:
+            type: number
+        - name: guitarType
+          required: false
+          in: query
+          description: Filter product by Guitar Type
+          example:
+            - электро
+            - акустика
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - электро
+                - акустика
+                - укулеле
+        - name: guitarStringType
+          required: false
+          in: query
+          description: Filter product by Guitar String Type
+          example:
+            - 4
+            - 6
+          schema:
+            type: array
+            items:
+              type: number
+              enum:
+                - 4
+                - 6
+                - 7
+                - 12
+        - name: sortDirection
+          required: false
+          in: query
+          description: Direction of product sorting (ASC or DESC)
+          example: asc
+          schema:
+            enum:
+              - asc
+              - desc
+            type: string
+        - name: sortType
+          required: false
+          in: query
+          description: Type of sorting to be applied to the post list
+          example: BY_DATE
+          schema:
+            enum:
+              - BY_DATE
+              - BY_PRICE
+            type: string
+      responses:
+        '200':
+          description: The products list has been successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPaginationDto'
+        '404':
+          description: Products not found.
+      tags:
+        - products
+      security:
+        - bearer: []
+  /api/products/{productId}:
+    get:
+      operationId: ProductController_getProduct
+      summary: Get product by ID
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The product has been successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '404':
+          description: Product not found.
+      tags:
+        - products
+      security:
+        - bearer: []
+    patch:
+      operationId: ProductController_updateProduct
+      summary: Update product
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductDto'
+      responses:
+        '200':
+          description: The product has been successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '404':
+          description: Product not found.
+      tags:
+        - products
+      security:
+        - bearer: []
+    delete:
+      operationId: ProductController_deleteProduct
+      summary: Delete product by ID
+      parameters:
+        - name: productId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The product has been successfully deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductDto'
+        '404':
+          description: Product not found.
+      tags:
+        - products
+      security:
+        - bearer: []
+info:
+  title: User API
+  description: API description for User operations
+  version: '1.0'
+  contact: {}
+tags: []
+servers: []
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    CreateUserDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@example.com
+          description: The email of the user
+        name:
+          type: string
+          example: John Doe
+          description: The name of the user
+          minLength: 1
+          maxLength: 15
+        password:
+          type: string
+          example: '123456'
+          description: The password of the user
+          minLength: 6
+          maxLength: 12
+      required:
+        - email
+        - name
+        - password
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 60d0fe4f5311236168a109ca
+          description: The unique identifier of the user
+        email:
+          type: string
+          example: user@example.com
+          description: The email of the user
+        name:
+          type: string
+          example: John Doe
+          description: The name of the user
+      required:
+        - id
+        - email
+        - name
+    UpdateUserDto:
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@example.com
+          description: The email of the user
+        name:
+          type: string
+          example: John Doe
+          description: The name of the user
+          minLength: 1
+          maxLength: 15
+        password:
+          type: string
+          example: '123456'
+          description: The password of the user
+          minLength: 6
+          maxLength: 12
+      required:
+        - password
+    LoginDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address of the user trying to log in.
+          example: user@example.com
+        password:
+          type: string
+          description: The password for the user account.
+          example: UserPassword123!
+      required:
+        - email
+        - password
+    CreateProductDto:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Fender Stratocaster
+          description: The title of the product
+          minLength: 10
+          maxLength: 100
+        description:
+          type: string
+          example: A classic guitar model known for its versatility and tone.
+          description: The description of the product
+          minLength: 20
+          maxLength: 1024
+        photoId:
+          type: string
+          example: photo123
+          description: The ID of the photo associated with the product
+        guitarType:
+          type: string
+          example: электро
+          description: The type of the guitar
+          enum:
+            - электро
+            - акустика
+            - укулеле
+        article:
+          type: string
+          example: ART12345
+          description: The article of the product
+          minLength: 5
+          maxLength: 40
+        guitarStringType:
+          type: number
+          example: 6
+          description: The type of strings used in the guitar
+          enum:
+            - 4
+            - 6
+            - 7
+            - 12
+        price:
+          type: number
+          example: 1500
+          description: The price of the product
+          minimum: 100
+          maximum: 1000000
+      required:
+        - title
+        - description
+        - photoId
+        - guitarType
+        - article
+        - guitarStringType
+        - price
+    ProductDto:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6655fa9caba40a3fafedcea5
+          description: The unique identifier of the product
+        title:
+          type: string
+          example: Fender Stratocaster
+          description: The title of the product
+        description:
+          type: string
+          example: A classic guitar model known for its versatility and tone.
+          description: The description of the product
+        postedAt:
+          format: date-time
+          type: string
+          example: '2023-05-28T14:00:00Z'
+          description: The date when the product was posted
+        photoId:
+          type: string
+          example: photo123
+          description: The ID of the photo associated with the product
+        guitarType:
+          type: string
+          example: электро
+          description: The type of the guitar
+          enum:
+            - электро
+            - акустика
+            - укулеле
+        article:
+          type: string
+          example: ART12345
+          description: The article of the product
+        guitarStringType:
+          type: number
+          example: 6
+          description: The type of strings used in the guitar
+          enum:
+            - 4
+            - 6
+            - 7
+            - 12
+        price:
+          type: number
+          example: 1500
+          description: The price of the product
+      required:
+        - id
+        - title
+        - description
+        - postedAt
+        - photoId
+        - guitarType
+        - article
+        - guitarStringType
+        - price
+    ProductPaginationDto:
+      type: object
+      properties:
+        entities:
+          description: Array of Products entities
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDto'
+        totalPages:
+          type: number
+          description: Total number of available pages
+          example: 5
+        currentPage:
+          type: number
+          description: Current page number
+          example: 1
+        totalItems:
+          type: number
+          description: Total number of items across all pages
+          example: 50
+        itemsPerPage:
+          type: number
+          description: Number of items per page
+          example: 10
+      required:
+        - entities
+        - totalPages
+        - currentPage
+        - totalItems
+        - itemsPerPage
+    UpdateProductDto:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Fender Stratocaster
+          description: The title of the product
+          minLength: 10
+          maxLength: 100
+        description:
+          type: string
+          example: A classic guitar model known for its versatility and tone.
+          description: The description of the product
+          minLength: 20
+          maxLength: 1024
+        photoId:
+          type: string
+          example: photo123
+          description: The ID of the photo associated with the product
+        guitarType:
+          type: string
+          example: электро
+          description: The type of the guitar
+          enum:
+            - электро
+            - акустика
+            - укулеле
+        article:
+          type: string
+          example: ART12345
+          description: The article of the product
+          minLength: 5
+          maxLength: 40
+        guitarStringType:
+          type: number
+          example: 6
+          description: The type of strings used in the guitar
+          enum:
+            - 4
+            - 6
+            - 7
+            - 12
+        price:
+          type: number
+          example: 1500
+          description: The price of the product
+          minimum: 100
+          maximum: 1000000
+      required:
+        - price

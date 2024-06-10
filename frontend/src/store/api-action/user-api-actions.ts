@@ -57,14 +57,10 @@ export const registerAction = createAsyncThunk<
   'user/registerAction',
   async ({ email, password, name }, {extra: api, rejectWithValue}) => {
     try {
-      console.log(1);
       const { data } = await api.post<UserDto>(APIRoute.CreateUser, {email, password, name});
-      console.log(data);
 
       return data;
     } catch (error) {
-      console.log(3);
-      console.log(handleApiError(error));
       toast.warning(handleApiError(error), {
         position: 'top-right'
       });

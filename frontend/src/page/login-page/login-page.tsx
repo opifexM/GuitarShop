@@ -1,5 +1,6 @@
 import { FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Footer } from '../../component/footer/footer.tsx';
 import { Header } from '../../component/header/header.tsx';
 import { AppRoute } from '../../const.ts';
@@ -18,7 +19,13 @@ export function LoginPage() {
       dispatch(loginAction({
         email: loginRef.current.value,
         password: passwordRef.current.value
-      }));
+      }))
+        .unwrap()
+        .then(() => {
+          toast.success('Login is successful', {
+            position: 'top-right'
+          });
+        });
     }
   };
 
@@ -30,6 +37,7 @@ export function LoginPage() {
           <section className="login">
             <h1 className="login__title">Войти</h1>
             <p className="login__text">Hовый пользователь?
+              <span> </span>
               <Link className="login__link"
                 to={AppRoute.Register}
               >Зарегистрируйтесь

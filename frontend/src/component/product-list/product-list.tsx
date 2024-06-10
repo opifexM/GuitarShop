@@ -13,10 +13,12 @@ export function ProductList({ products }: Readonly<ProductListProps>) {
     />
   ));
 
+  const noProduct = 'Not products found';
+
   return (
     <div className="catalog-cards">
       <ul className="catalog-cards__list">
-        {productCards}
+        {productCards.length ? productCards : noProduct}
       </ul>
     </div>
   );

@@ -5,10 +5,12 @@ import { AppRoute, AuthorizationStatus } from './const.ts';
 import { useAppDispatch, useAppSelector } from './hook';
 import { LoginPage } from './page/login-page/login-page.tsx';
 import { NotFoundPage } from './page/not-found-page/not-found-page.tsx';
+import { ProductCreatePage } from './page/product-create-page/product-create-page.tsx';
+import { ProductDeletePage } from './page/product-delete-page/product-delete-page.tsx';
 import { ProductEditPage } from './page/product-edit-page/product-edit-page.tsx';
 import { ProductPage } from './page/product-page/product-page.tsx';
+import { ProductViewPage } from './page/product-view-page/product-view-page.tsx';
 import { RegistrationPage } from './page/registration-page/registration-page.tsx';
-import { fetchProductsAction } from './store/api-action/data-api-actions.ts';
 import { checkAuthAction } from './store/api-action/user-api-actions.ts';
 import { getAuthorizationStatus } from './store/api-communication/api-communication.selectors.ts';
 
@@ -23,11 +25,13 @@ export function App({ RouterComponent = BrowserRouter, routerProps = {} }: Reado
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-
   useEffect(() => {
     dispatch(checkAuthAction());
-    dispatch(fetchProductsAction());
   }, [dispatch]);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown) {
+    return null;
+  }
 
   return (
     <RouterComponent {...routerProps}>
@@ -65,6 +69,17 @@ export function App({ RouterComponent = BrowserRouter, routerProps = {} }: Reado
             </PrivateRoute>
           }
         />
+        <Route path={AppRoute.ProductCreate}
+          element={
+            <PrivateRoute
+              authorizationStatus={authorizationStatus}
+              requiredAuthorizationStatus={AuthorizationStatus.Auth}
+              declinedElement={AppRoute.Login}
+            >
+              <ProductCreatePage />
+            </PrivateRoute>
+          }
+        />
         <Route path={AppRoute.ProductId}
           element={
             <PrivateRoute
@@ -72,7 +87,29 @@ export function App({ RouterComponent = BrowserRouter, routerProps = {} }: Reado
               requiredAuthorizationStatus={AuthorizationStatus.Auth}
               declinedElement={AppRoute.Login}
             >
+              <ProductViewPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path={AppRoute.ProductIdEdit}
+          element={
+            <PrivateRoute
+              authorizationStatus={authorizationStatus}
+              requiredAuthorizationStatus={AuthorizationStatus.Auth}
+              declinedElement={AppRoute.Login}
+            >
               <ProductEditPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path={AppRoute.ProductIdDelete}
+          element={
+            <PrivateRoute
+              authorizationStatus={authorizationStatus}
+              requiredAuthorizationStatus={AuthorizationStatus.Auth}
+              declinedElement={AppRoute.Login}
+            >
+              <ProductDeletePage />
             </PrivateRoute>
           }
         />

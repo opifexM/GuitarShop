@@ -47,14 +47,14 @@ export class UserRepository {
   }
 
   public async update(id: string, entity: UserEntity): Promise<UserEntity> {
-    this.logger.log(`Updating entity by ID: '${id}'`);
+    this.logger.log(`Updating user entity by ID: '${id}'`);
     const updatedDocument = await this.model.findByIdAndUpdate(
       new ObjectId(id),
       entity.toPOJO(),
       { new: true },
     );
     if (!updatedDocument) {
-      this.logger.error(`Entity not found for update: ID ${id}`);
+      this.logger.error(`User not found for update: ID ${id}`);
       throw new NotFoundException(`Entity with id ${entity.id} not found`);
     }
 

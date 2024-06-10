@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { Document, Model } from 'mongoose';
 import { PaginationResult } from 'shared/type/pagination.interface';
+import { ProductQuery } from 'shared/type/product/product.query';
 import { SortType } from 'shared/type/sort-type.enum';
-import { ProductQuery } from '../product.query';
 import { ProductEntity } from './product.entity';
 import { ProductFactory } from './product.factory';
 import { ProductModel } from './product.schema';
@@ -102,10 +102,10 @@ export class ProductRepository {
 
     const filterCriteria: { [key: string]: any } = {};
     if (guitarType) {
-      filterCriteria['guitarType'] = guitarType;
+      filterCriteria['guitarType'] = { $in: guitarType };
     }
     if (guitarStringType) {
-      filterCriteria['guitarStringType'] = guitarStringType;
+      filterCriteria['guitarStringType'] = { $in: guitarStringType };
     }
     this.logger.log(
       `Retrieving products filterCriteria: '${JSON.stringify(filterCriteria)}', sortCriteria: '${JSON.stringify(sortCriteria)}'`,

@@ -27,17 +27,21 @@ export class CliService {
     this.program
       .name('GuitarShopCli')
       .description('GuitarShop CLI generate utility')
+      .passThroughOptions()
       .version('1.0.0');
 
     this.program
-      .command('generate <n> <connectionString>')
+      .command('--generate')
+      .alias('generate')
+      .argument('<n>', 'Number of items to generate')
+      .argument('<connectionString>', 'Database connection string')
       .description('Generate test data and save to DB')
       .action(async (n: string, connectionString: string) => {
         const numberOfItems = parseInt(n, 10);
         this.logger.log(
           `Generating [${numberOfItems}] items in the database with connection string: '${connectionString}'`,
         );
-        this.connectToDatabase(connectionString, numberOfItems);
+        await this.connectToDatabase(connectionString, numberOfItems);
       });
 
     this.program
@@ -56,8 +60,8 @@ export class CliService {
     this.logger.log(`Connection to database '${connectionString}'...`);
     const mongoose = await connect(connectionString);
     const db: Db = mongoose.connection.db;
-    await this.setupAdminUser(db);
     await this.setupProducts(db, numberOfItems);
+    await this.setupAdminUser(db);
     await mongoose.connection.close();
   }
 
@@ -73,19 +77,36 @@ export class CliService {
 
   private async setupProducts(db: Db, numberOfItems: number) {
     const productsCollection = db.collection('products');
+    const validGuitarStringTypes: { [key in GuitarType]: GuitarStringType[] } =
+      {
+        [GuitarType.ACOUSTIC]: [
+          GuitarStringType.SIX,
+          GuitarStringType.SEVEN,
+          GuitarStringType.TWELVE,
+        ],
+        [GuitarType.ELECTRO]: [
+          GuitarStringType.FOUR,
+          GuitarStringType.SIX,
+          GuitarStringType.SEVEN,
+        ],
+        [GuitarType.UKULELE]: [GuitarStringType.FOUR],
+      };
 
     for (let i = 0; i < numberOfItems; i++) {
+      const guitarType = faker.helpers.arrayElement(
+        Object.values(GuitarType),
+      ) as GuitarType;
+      const guitarStringType = faker.helpers.arrayElement(
+        validGuitarStringTypes[guitarType],
+      );
+
       await productsCollection.insertOne({
         title: faker.commerce.productName(),
         description: faker.lorem.paragraph(),
         photoId: `catalog-product-${faker.number.int({ min: 0, max: 8 })}.png`,
         article: faker.string.uuid(),
-        guitarStringType: faker.helpers.arrayElement(
-          Object.values(GuitarStringType).filter(
-            (value) => typeof value === 'number',
-          ),
-        ),
-        guitarType: faker.helpers.arrayElement(Object.values(GuitarType)),
+        guitarStringType,
+        guitarType,
         postedAt: Date.now(),
         price: faker.number.int({
           min: PRODUCT.PRICE.MIN,

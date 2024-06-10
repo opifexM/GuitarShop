@@ -11,19 +11,6 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { fillDto } from 'shared/lib/common';
-import { LoggedDto } from 'shared/type/user/dto/logged.dto';
-import { TokenPayload } from 'shared/type/token-payload.interface';
-import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
-import { JwtAuthGuard } from './authentication/jwt-auth.guard';
-import { LocalAuthGuard } from './authentication/local-auth.guard';
-import { RequestWithTokenPayload } from './authentication/request-with-token-payload.interface';
-import { RequestWithUser } from './authentication/request-with-user.interface';
-import { CreateUserDto } from 'shared/type/user/dto/create-user.dto';
-import { LoginDto } from 'shared/type/user/dto/login.dto';
-import { UpdateUserDto } from 'shared/type/user/dto/update-user.dto';
-import { UserDto } from 'shared/type/user/dto/user.dto';
-import { UserService } from './user.service';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -31,6 +18,19 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { fillDto } from 'shared/lib/common';
+import { TokenPayload } from 'shared/type/token-payload.interface';
+import { CreateUserDto } from 'shared/type/user/dto/create-user.dto';
+import { LoggedDto } from 'shared/type/user/dto/logged.dto';
+import { LoginDto } from 'shared/type/user/dto/login.dto';
+import { UpdateUserDto } from 'shared/type/user/dto/update-user.dto';
+import { UserDto } from 'shared/type/user/dto/user.dto';
+import { MongoIdValidationPipe } from '../database/mongo-id-validation.pipe';
+import { JwtAuthGuard } from './authentication/jwt-auth.guard';
+import { LocalAuthGuard } from './authentication/local-auth.guard';
+import { RequestWithTokenPayload } from './authentication/request-with-token-payload.interface';
+import { RequestWithUser } from './authentication/request-with-user.interface';
+import { UserService } from './user.service';
 
 @ApiTags('users')
 @Controller('users')

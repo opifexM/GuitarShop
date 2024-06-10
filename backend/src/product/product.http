@@ -1,8 +1,10 @@
 @host = http://localhost:3000
 @productId = 6655faf5d8cafe6e5da828fd
+@token = eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NjU2NzBmYzAzY2ZmMjNiNzM4NjM0MzMiLCJlbWFpbCI6InVzZXIyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3NBIiwiaWF0IjoxNzE3MjkzNjgyLCJleHAiOjE3MTcyOTY2ODJ9.mfbsnCInTf23rVCpa_CQjvfG4Mv1y_NTVx_k2BpYCufDFoe08rdIxy9-Fg0QcEbOqLID0Gy_oEosm5002oTiJw
 
 ### Create a new product
 POST {{host}}/api/products HTTP/1.1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -18,33 +20,47 @@ Content-Type: application/json
 
 ### Get product by ID
 GET {{host}}/api/products/{{productId}} HTTP/1.1
+Authorization: Bearer {{token}}
 
 
 ### Get products
 GET {{host}}/api/products HTTP/1.1
+Authorization: Bearer {{token}}
 
 ### Get products with filter guitarType
-@guitarType = акустика
-GET {{host}}/api/products?guitarType={{guitarType}} HTTP/1.1
+@guitarType1 = %D1%8D%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE
+@guitarType2 = %D0%B0%D0%BA%D1%83%D1%81%D1%82%D0%B8%D0%BA%D0%B0
+GET {{host}}/api/products?guitarType={{guitarType1}}&guitarType={{guitarType2}} HTTP/1.1
+Authorization: Bearer {{token}}
+
 
 ### Get products with filter guitarType and guitarStringType
-@guitarStringType = 4
-GET {{host}}/api/products?guitarType={{guitarType}}&guitarStringType={{guitarStringType}} HTTP/1.1
+@guitarStringType1 = 4
+@guitarStringType2 = 12
+GET {{host}}/api/products?guitarType={{guitarType1}}&guitarStringType={{guitarStringType1}}&guitarStringType={{guitarStringType2}} HTTP/1.1
+Authorization: Bearer {{token}}
+
 
 ### Get products with sort des
 @sortType = BY_PRICE
 GET {{host}}/api/products?sortType={{sortType}} HTTP/1.1
+Authorization: Bearer {{token}}
+
 
 ### Get products with sort asc
 @sortDirection = asc
 GET {{host}}/api/products?sortType={{sortType}}&sortDirection={{sortDirection}} HTTP/1.1
+Authorization: Bearer {{token}}
+
 
 ### Get products with sort and filter
-GET {{host}}/api/products?sortType={{sortType}}&sortDirection={{sortDirection}}&guitarStringType={{guitarStringType}} HTTP/1.1
+GET {{host}}/api/products?sortType={{sortType}}&sortDirection={{sortDirection}}&guitarStringType={{guitarStringType1}} HTTP/1.1
+Authorization: Bearer {{token}}
 
 
 ### Update product
 PATCH {{host}}/api/products/{{productId}} HTTP/1.1
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -54,3 +70,4 @@ Content-Type: application/json
 
 ### Delete product by ID
 DELETE {{host}}/api/products/{{productId}} HTTP/1.1
+Authorization: Bearer {{token}}

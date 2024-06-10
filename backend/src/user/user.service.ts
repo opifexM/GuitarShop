@@ -9,12 +9,12 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Token } from 'shared/type/token.interface';
-import { BcryptCrypto } from '../crypto/bcrypt.crypto';
-import { EmailService } from '../email/email.service';
-import { createJWTPayload } from './authentication/jwt';
 import { CreateUserDto } from 'shared/type/user/dto/create-user.dto';
 import { LoginDto } from 'shared/type/user/dto/login.dto';
 import { UpdateUserDto } from 'shared/type/user/dto/update-user.dto';
+import { BcryptCrypto } from '../crypto/bcrypt.crypto';
+import { EmailService } from '../email/email.service';
+import { createJWTPayload } from './authentication/jwt';
 import { UserEntity } from './entity/user.entity';
 import { UserFactory } from './entity/user.factory';
 import { UserRepository } from './entity/user.repository';
